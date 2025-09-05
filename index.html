@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drag & Drop File Uploader – Demo</title>
+  <link rel="stylesheet" href="uploader.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Drag & Drop File Uploader</h1>
+    <p class="subtitle">Lightweight • Accessible • No dependencies</p>
+
+    <!-- Uploader root -->
+    <div id="uploader"></div>
+
+    <footer class="footnote">
+      <p>Tip: This demo runs in simulation mode (no server). Set <code>uploadUrl</code> to enable real uploads.</p>
+    </footer>
+  </main>
+
+  <script src="uploader.js"></script>
+  <script>
+    // Initialize the uploader
+    const uploader = new DragDropUploader('#uploader', {
+      // DEMO: keep uploadUrl null to simulate uploads on the client only
+      uploadUrl: null,                  // e.g. "/api/upload" for real server
+      fieldName: 'files[]',
+      multiple: true,
+      autoUpload: true,
+      withCredentials: false,
+      headers: { /* 'X-Token': '...' */ },
+
+      // Validation
+      maxFiles: 20,
+      maxFileSize: 5 * 1024 * 1024,     // 5 MB
+      allowedTypes: ['image/*', 'application/pdf'],
+
+      // UI texts (i18n-ready)
+      texts: {
+        dropHere: 'Drop files here or',
+        browse: 'Browse',
+        or: 'or',
+        files: 'files',
+        remove: 'Remove',
+        cancel: 'Cancel',
+        retry: 'Retry',
+        uploading: 'Uploading…',
+        completed: 'Completed',
+        queued: 'Queued',
+        failed: 'Failed',
+        tooMany: 'Too many files.',
+        tooLarge: 'File is too large.',
+        invalidType: 'Unsupported file type.',
+        duplicate: 'Duplicate file skipped.',
+      },
+
+      // Callbacks
+      onAdd: (file) => console.log('Added:', file.name),
+      onRemove: (file) => console.log('Removed:', file.name),
+      onProgress: (file, pct) => console.log('Progress:', file.name, pct + '%'),
+      onSuccess: (file, response) => console.log('Success:', file.name, response),
+      onError: (file, error) => console.warn('Error:', file?.name, error),
+      onQueueComplete: () => console.log('All uploads finished.')
+    });
+  </script>
+</body>
+</html>
